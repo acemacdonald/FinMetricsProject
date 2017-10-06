@@ -7,7 +7,7 @@ output: html_document
 
 THe aim of this paper will be to estimate a natural rate of interest for South Africa. 
 
-Change
+Changes
 
 # Techniques used
 
