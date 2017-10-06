@@ -1,0 +1,113 @@
+---
+title: "README"
+output: html_document
+---
+
+# Aim
+
+THe aim of this paper will be to estimate a natural rate of interest for South Africa. 
+
+
+# Techniques used
+
+  *Univariate time series estimates
+  ---------------------------------
+  Multi-year averages
+  Ten year moving averages of ex post real st i-rates
+  
+  Time series filtering techniques
+  --------------------------------
+  Hodrik-Prescott filter
+  Bandpass filter
+  Unobserved components stochastic volatility model
+  
+  *Multivariate Kalman filter estimates
+  -------------------------------------
+  LAUBACH WILLIAMS MODEL
+
+# Data
+
+  For replication results
+  -----------------------
+  
+  Schularik and Taylor dataset
+    
+    
+    
+Remember to delete all data once the project is finished.
+    
+# Packages used
+
+    ....
+    
+# Miscellaneous notes
+
+    * Note when running this function, BigFunc, it takes roughly 20 minutes.
+    
+    * I have issues having my model converge
+    
+    * I am stuck with code in section xxx, please check
+    
+
+# PAPER
+
+## Introduction
+
+   *Outline what the skeleton of the paper is going to be.
+   Discuss the rationale behind estimating a natural rate of interest
+    - Why do we need one?
+    - Policymaking- must they acknowledge the natural rate or try implement policies
+                    that are not heavily affected by the natural rate
+    - Discuss Laubach-Williams model
+    - Add a very brief, concise discussion on the theoretical and then empirical processes
+      to estimate the natural rate of interest
+   
+## Methodology
+
+list code
+
+ctrl alt i
+
+```{r Initialize}
+L <- list.files("Code", full.names = TRUE)
+for(i in 1:length(L)){
+  source(L(i))
+}
+
+library(rmsfuns)
+load.pkg(c("PerformanceAnalytics", "tidyverse", ))
+```
+
+
+```{r Data Import}
+
+Data <- read_rds("Data/ ")
+
+```
+
+```{r Returns create}
+
+```
+
+
+
+
+## Lit Review
+
+ The goal here will be to arrive at a complete definition on what the natural rate of interest is, one that
+ is firmly anchored in the literature.
+ Provide a proper disection of the Laubach.
+ 
+ Natural rate of interest==> intersection of IS curve and potential GDP line. 
+       - To add ==> explain a shift in the IS/potential GDP and its effect on the natural rate 
+       - What affects potential GDP?
+       - What affects the real interest rate and thus the natural rate?
+       - LT/ST perspectives??
+        
+NB question- why do we need to know what the natural rate of interest is?
+        -> then explain policies 
+ 
+
+## Results
+
+## COnclusion
