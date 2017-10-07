@@ -12,7 +12,8 @@ output: html_document
                    -prepare.rstar.data.XX.R    ,  where XX = (ca, ea, uk, us)
       
       I'm working on just replicating the US data first, but I'm struggling to get the getFRED() function
-      to run.
+      to run. I think its a directory issue but the only place I can see a directory is when it wants to put
+      the data in the folder: Data.
                 
       In terms of the other data, do I put all the data in one file? Or must they be in separate sub-folders
       for each country?

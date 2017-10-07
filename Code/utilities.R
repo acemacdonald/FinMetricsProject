@@ -137,7 +137,7 @@ getFRED <- function(url, freq = "Quarterly") {
   #download.file(url, destfile = 'FREDtemp.txt', method = "wget")
   #FREDraw <- readLines('FREDtemp.txt')
   
-  txt.file.name <- paste0("rawData/",substr(url, regexpr('[a-zA-z0-9]*.txt',url),1000))
+  txt.file.name <- paste0("Data/",substr(url, regexpr('[a-zA-z0-9]*.txt',url),1000))
   if (!file.exists(txt.file.name)){
     # Download the data from FRED
     #download.file(url, destfile = 'FREDtemp.txt', method = "wget")
