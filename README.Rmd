@@ -3,6 +3,21 @@ title: "README"
 output: html_document
 ---
 
+    
+# Miscellaneous notes
+
+    * For the section on methodology where we put all the code, the LW paper has four codes that 
+      prepare the data for each country. I'm not sure how to enter these into them so they can all
+      run simultaneously. The codes are:
+                   -prepare.rstar.data.XX.R    ,  where XX = (ca, ea, uk, us)
+      
+      I'm working on just replicating the US data first, but I'm struggling to get the getFRED() function
+      to run.
+                
+      In terms of the other data, do I put all the data in one file? Or must they be in separate sub-folders
+      for each country?
+
+
 # Aim
 
 THe aim of this paper will be to estimate a natural rate of interest for South Africa. 
@@ -32,24 +47,57 @@ Changes
   -----------------------
   
   Schularik and Taylor dataset
+  For each economy:
+          - real GDP
+          - inflation
+              -annualized quarterly growth rate of the specified consumer price series
+          - short-term nominal interest rate
+              -expressed on a 365 day annualized basis
+          - procedure to compute inflation expectations
+              - in order to calculate the ex ante real short-term interest rate
     
+  US DATA
+  -------
+  
+  - Real GDP and core PCE
+  - ST i-rate is the annualized nominal federal funds rate
+  - All US data from the St Louis FRED
+  
+  CANADA DATA - all data from Statistics Canada except real GDP
+  -----------
+  
+  - Real GDP from IMF's IFS
+  - ST i-rate ---> Bank of Canada's overnight target rate
+              ---> taken as the end of period value for each month
+              ---> aggregated to quarterly frequency
+              ---> prior to 2001, LW used BoC's bank rate as the i-rate
+  - Inlfation ---> BoC's consumer price index
+              ---> prior to 1984: use CPI containing all items
+  
+  EU DATA - all data from EU's Area-Wide Model
+  ------- - available from the Euro Area Business Cycle Network
+  
+  - CPI beginning in 1988; total price index prior to 1988
+  - nominal ST i-rate is the 3 month rate
+  
+  UK DATA
+  -------
+  
+  - GDP data - office of national statistics (ONS)
+  - Inflation - core CPI
+              - prior to 1970 used all items CPI; both from OECD
+  - ST i-rate - Bank of ENgland's official bank rate
     
     
 Remember to delete all data once the project is finished.
     
 # Packages used
 
-    ....
+    tis
+    mFilter
+    nloptr
+    HelpersMG
     
-# Miscellaneous notes
-
-    * Note when running this function, BigFunc, it takes roughly 20 minutes.
-    
-    * I have issues having my model converge
-    
-    * I am stuck with code in section xxx, please check
-    
-
 # PAPER
 
 ## Introduction
@@ -64,6 +112,15 @@ Remember to delete all data once the project is finished.
       to estimate the natural rate of interest
    
 ## Methodology
+
+  # What needs to be replicated:
+     -natural rate of interest
+     -potential GDP
+     -potential GDP trend growth
+     - for following countries: United States, Canada, Euro area, UK
+     
+  # And then repeat the same process for South Africa
+     -maybe for other Southern African states if there is the data/if its necessary
 
 list code
 
@@ -82,14 +139,242 @@ load.pkg(c("PerformanceAnalytics", "tidyverse", ))
 
 ```{r Data Import}
 
-Data <- read_rds("Data/ ")
+getFRED()
 
 ```
 
-```{r Returns create}
+```{r utilities}
+
+#------------------------------------------------------------------------------#
+# File:        utilities.R
+#
+# Description: This file contains basic functions that will be used throughout
+#              HLW.
+#------------------------------------------------------------------------------#
+
+shiftQuarter <- function(original.start,shift){
+#################################################################
+# This function takes in a (year,quarter) date in time series format
+# and a shift number, and returns the (year,quarter) date corresponding
+# to the shift. Positive values of shift produce leads and negative values
+# of shift produce lags.
+# For example, entering 2014q1 with a shift of -1 would return 2013q4.
+# Entering 2014q1 with a shift of 1 would return 2014q2.
+# In each case, the first argument of the function must be entered as
+# a two-element vector, where the first element corresponds to the year
+# and the second element corresponds to the quarter.
+# For example, Q12014 must be entered as "c(2014,1)".
+################################################################    
+
+# Leads (positive values of shift)
+    if (shift > 0) {
+        new.start = c(0,0)
+        sum = original.start[2] + shift
+    
+        # Get the year value
+        if (sum <= 4) {
+            new.start[1] = original.start[1]
+        }
+        else {
+            new.start[1] = original.start[1] + ceiling(sum/4) - 1
+        }
+
+        # Get the quarter value
+        if (sum %% 4 > 0) {
+            new.start[2] = sum %% 4
+        }
+        else {
+            new.start[2] = sum %% 4 + 4
+        }
+    }
+
+# Lags (negative values of shift)
+    else {
+        new.start = c(0,0)
+        diff = original.start[2] - abs(shift)
+    
+        # Get the year value
+        if (diff > 0) {
+            new.start[1] = original.start[1]
+        }
+        else {
+            new.start[1] = original.start[1] - (1 + floor(abs(diff)/4))
+        }
+
+        # Get the quarter value
+        if (diff %% 4 > 0) {
+            new.start[2] = diff %% 4
+        }
+        else {
+            new.start[2] = diff %% 4 + 4
+        }
+    }
+        
+return(new.start)}
+
+
+shiftMonth <- function(original.start,shift){
+#################################################################
+# This function takes in a (year,month) date in time series format
+# and a shift number, and returns the (year,month) date corresponding
+# to the shift. Positive values of shift produce leads and negative values
+# of shift produce lags.
+# For example, entering 2014m1 with a shift of -1 would return 2013m12.
+# Entering 2014m1 with a shift of 1 would return 2014m2.
+# In each case, the first argument of the function must be entered as
+# a two-element vector, where the first element corresponds to the year
+# and the second element corresponds to the month.
+# This function is analogous to shiftQuarter().
+################################################################    
+
+# Leads (positive values of shift)
+    if (shift > 0) {
+        new.start = c(0,0)
+        sum = original.start[2] + shift
+    
+        # Get the year value
+        if (sum <= 12) {
+            new.start[1] = original.start[1]
+        }
+        else {
+            new.start[1] = original.start[1] + ceiling(sum/12) - 1
+        }
+
+        # Get the month value
+        if (sum %% 12 > 0) {
+            new.start[2] = sum %% 12
+        }
+        else {
+            new.start[2] = sum %% 12 + 12
+        }
+    }
+
+# Lags (negative values of shift)
+    else {
+        new.start = c(0,0)
+        diff = original.start[2] - abs(shift)
+    
+        # Get the year value
+        if (diff > 0) {
+            new.start[1] = original.start[1]
+        }
+        else {
+            new.start[1] = original.start[1] - (1 + floor(abs(diff)/12))
+        }
+
+        # Get the month value
+        if (diff %% 12 > 0) {
+            new.start[2] = diff %% 12
+        }
+        else {
+            new.start[2] = diff %% 12 + 12
+        }
+    }
+        
+return(new.start)}
+
+
+getFRED <- function(url, freq = "Quarterly") {
+##########################################################################################
+# This function downloads data from FRED. It returns quarterly data.
+# User must provide the FRED url.
+########################################################################################### 
+    # Download the data from FRED
+    
+    #download.file(url, destfile = 'FREDtemp.txt', method = "wget")
+    #FREDraw <- readLines('FREDtemp.txt')
+    
+    txt.file.name <- paste0("rawData/",substr(url, regexpr('[a-zA-z0-9]*.txt',url),1000))
+    if (!file.exists(txt.file.name)){
+        # Download the data from FRED
+        #download.file(url, destfile = 'FREDtemp.txt', method = "wget")
+        system(paste0('wget --no-check-certificate "', url, '"'))
+        system(paste('mv',substr(url, regexpr('[a-zA-z0-9]*.txt',url),1000),txt.file.name))
+    }
+    FREDraw <- readLines(txt.file.name) 
+
+    # Frequency
+    freq.FRED <- gsub(' ', '',substr(FREDraw[which(regexpr('Frequency', FREDraw)==1)],
+                                     (nchar('Frequency')+2),100))    
+
+    # Where does the data start
+    datastart = which(gsub(' ', '',FREDraw)=='DATEVALUE') - 2
+
+    #data <- read.table('FREDtemp.txt', skip = datastart, header = TRUE)
+    data <- read.table(txt.file.name, skip = datastart, header = TRUE)
+
+    first.year  <- as.numeric(format(as.Date(data$DATE[1]),'%Y'))
+    first.month <- as.numeric(format(as.Date(data$DATE[1]),'%m'))
+    
+    # Adjust frequency
+    if (freq.FRED == 'Quarterly'){
+        first.q  <- (first.month-1)/3 + 1
+        data.tis <- tis(data$VALUE, start = c(first.year, first.q), tif = 'quarterly')
+    } else if (freq.FRED == 'Monthly') {
+        data.tis <- tis(data$VALUE, start = c(first.year, first.month), tif = 'monthly')
+    }
+
+    # Convert frequency
+    if (freq.FRED == 'Monthly' & freq == 'Quarterly') {
+        data.tis <- convert(data.tis, tif = 'quarterly', method = 'constant', observed. = 'averaged')
+    }
+
+    return(data.tis)
+} 
+
+
+splice <- function(s1, s2, splice.date, freq) {
+##########################################################################################
+# This function splices two series, with the series s2 beginning at splice.date
+# and extended back using the growth rate at the splice.date times series s1
+# The freq argument accepts two values - 'quarterly' and 'monthly' -
+# but it could be modified to take more.
+##########################################################################################    
+    t <- splice.date #renaming for convenience
+    if (freq == "quarterly" | freq == "Quarterly") {
+        t.minus.1 <- shiftQuarter(t,-1)
+    }
+    else if (freq == "monthly" | freq == "Monthly") {
+        t.minus.1 <- shiftMonth(t,-1)
+    }
+    else { stop("You must enter 'quarterly' or 'monthly' for freq.") }
+    ratio <- as.numeric(window(s2,start = t, end = t)/
+                        window(s1,start = t, end = t))
+
+    return(mergeSeries(ratio*window(s1,end = t.minus.1),window(s2, start = t)))
+}
+
+
+gradient <- function(f, x, delta = x * 0 + 1.0e-5) {
+##########################################################################################
+# This function computes the gradient of a function f given a vector input x.
+##########################################################################################   
+    g <- x * 0
+    for (i in 1:length(x)) {
+        x1 <- x
+        x1[i] <- x1[i] + delta[i]
+        f1 <- f(x1)
+        x2 <- x
+        x2[i] <- x2[i] - delta[i]
+        f2 <- f(x2)
+        g[i] <- (f1 - f2) / delta[i] / 2
+    }
+    return(g)
+}
 
 ```
+ 
+ # This prepares the following functions:
+   - shiftQuarter
+   - shiftMonth
+   - getFRED
+   - splice
+   - gradient
+   
+ 
+```{r}
 
+```
 
 
 
