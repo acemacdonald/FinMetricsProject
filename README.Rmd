@@ -14,11 +14,11 @@ output: html_document
      I fixed the issue with regards to the source function, but I remember
      you said I should rather make it a function? 
     
-    In line in the prepare.rstar.data.uk.R script, I get the response
-    "Error in read.table(gdp.file, skip = 6, header = FALSE, sep = ",", stringsAsFactors = FALSE) : 
-  'file' must be a character string or connection"
-  
-  And this happens for all 3 variables, am I saving the data incorrectly?
+    In the preparation file, when it wants the data to be read in table 
+    format, it says <'file' must be a character string or connection >
+    
+    Do you know how I can fix it?
+    
   
               
 
@@ -119,6 +119,7 @@ Remember to delete all data once the project is finished.
     mFilter
     nloptr
     HelpersMG
+    seasonalview
     
 # PAPER
 

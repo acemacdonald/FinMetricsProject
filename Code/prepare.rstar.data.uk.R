@@ -5,7 +5,7 @@
 #              HLW for the UK.
 #------------------------------------------------------------------------------#
 rm(list = ls())
-source("utilities.R")
+source("C:/FinMetricsProject/Code/utilities.R")
 
 # Load time series library
 if (!require("tis")) {install.packages("tis"); library('tis')}
@@ -54,7 +54,7 @@ cpi.nsa      <- tis(cpi.data$cpi, start = cpi.start, tif = 'quarterly')
 #            b. Populate rows with years. Remove sub-headers and rows of spaces
 #               In Excel, select area and choose F5, "Special", "Blanks", Delete
 #            c. Code assume the setup has 4 columns: "year","day","month","rate"
-bank.rate.file      <- read.csv("C:/FinMetricsProject/rawData/bank.rate.file.uk.csv")
+bank.rate.file      <- read.csv2("C:/FinMetricsProject/rawData/bank.rate.file.uk.csv")
 bank.rate.data      <- read.table(bank.rate.file, skip = 0, header = TRUE, sep = ',', stringsAsFactors = FALSE)
 bank.rate.data$date <- as.Date(paste(bank.rate.data$month,bank.rate.data$day,bank.rate.data$year), "%b %d %Y")
 bank.rate.data      <- subset(bank.rate.data, select = c("date","rate"))
