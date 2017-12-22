@@ -6,17 +6,31 @@ output: html_document
     
 # Miscellaneous notes
 
-    * For the section on methodology where we put all the code, the LW paper has four codes that 
-      prepare the data for each country. I'm not sure how to enter these into them so they can all
+# For the section on methodology where we put all the code, the LW paper has      four codes that 
+      prepare the data for each country. I'm not sure how to enter these into     them so they can all
       run simultaneously. The codes are:
                    -prepare.rstar.data.XX.R    ,  where XX = (ca, ea, uk, us)
       
-      I'm working on just replicating the US data first, but I'm struggling to get the getFRED() function
-      to run. I think its a directory issue but the only place I can see a directory is when it wants to put
-      the data in the folder: Data.
-                
-      In terms of the other data, do I put all the data in one file? Or must they be in separate sub-folders
-      for each country?
+     I fixed the issue with regards to the source function, but I remember
+     you said I should rather make it a function? 
+    
+    In line in the prepare.rstar.data.uk.R script, I get the response
+    "Error in read.table(gdp.file, skip = 6, header = FALSE, sep = ",", stringsAsFactors = FALSE) : 
+  'file' must be a character string or connection"
+  
+  And this happens for all 3 variables, am I saving the data incorrectly?
+  
+              
+
+
+# Sourcing your functions:
+
+```{r}
+library(tidyverse)
+listSources <- list.files("Code", full.names = TRUE)
+listSources %>% as.list() %>% map(~source(.))
+```
+
 
 
 # Aim
@@ -24,6 +38,13 @@ output: html_document
 THe aim of this paper will be to estimate a natural rate of interest for South Africa. 
 
 Changes
+
+To add
+DM yields lower, em yields higher 
+Elevated yield differential and then well see an outflow of the rand
+Implications for carry trade 
+Want to see if rates are too high and too low
+Check deutshe bank carry index-- investable index
 
 # Techniques used
 

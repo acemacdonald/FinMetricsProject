@@ -1,11 +1,13 @@
+
+prep.rstar.us <- function(){
+
+
 #------------------------------------------------------------------------------#
 # File:        prepare.rstar.data.us.R
 #
 # Description: This file (1) compiles and (2) prepares the data used in
 #              HLW for the US.
 #------------------------------------------------------------------------------#
-rm(list = ls())
-source("utilities.R")
 
 # Load time series library
 if (!require("tis")) {install.packages("tis"); library('tis')}
@@ -24,16 +26,16 @@ data.end   <- c(2016,3)
 # NOTE: The getFRED() function requires the wget command line utility;
 #       users can also manually download the text files.
 
-gdp             <- getFRED(paste0('https://fred.stlouisfed.org/',
+gdp.us             <- getFRED(paste0('https://fred.stlouisfed.org/',
                                   'data/GDPC1.txt'))
 
-price.index     <- getFRED(paste0('https://fred.stlouisfed.org/',                                  
+price.index.us     <- getFRED(paste0('https://fred.stlouisfed.org/',                                  
                                   'data/PCEPILFE.txt'))
 
-ny.discount     <- getFRED(paste0('https://fred.stlouisfed.org/',
+ny.discount.us     <- getFRED(paste0('https://fred.stlouisfed.org/',
                                   'data/INTDSRUSM193N.txt'))
 
-fed.funds       <- getFRED(paste0('https://fred.stlouisfed.org/',
+fed.funds.us       <- getFRED(paste0('https://fred.stlouisfed.org/',
                                   'data/FEDFUNDS.txt'))
 
 #------------------------------------------------------------------------------#
@@ -62,3 +64,4 @@ interest <- mergeSeries(window(ny.discount.eff, end = c(1964,4)),window(fed.fund
 data.out <- window(cbind(gdp.log, inflation, inflation.expectations, interest),start = data.start, end = data.end)
 write.table(data.out,file = 'inputData/rstar.data.us.csv', sep = ',',
             col.names = TRUE, quote = FALSE, na = '.', row.names = FALSE)
+}

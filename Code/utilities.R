@@ -1,3 +1,7 @@
+utilities <- function(shiftQuarter,shiftMonth,getFRED,splice,gradient){
+
+
+
 #------------------------------------------------------------------------------#
 # File:        utilities.R
 #
@@ -213,4 +217,5 @@ gradient <- function(f, x, delta = x * 0 + 1.0e-5) {
     g[i] <- (f1 - f2) / delta[i] / 2
   }
   return(g)
+}
 }

@@ -27,7 +27,7 @@ data.end   <- c(2016,3)
 #     1. Download data from the ONS website:
 #        Series: ABMI: "Gross Domestic Product: chained volume measures: Seasonally adjusted (Millions of pounds)
 #     2. Save data as a CSV and specify the file name in gdp.file
-gdp.file  <- "rawData/uk_gdp_ons_abmi.csv"
+gdp.file  <- read.csv2("C:/FinMetricsProject/rawData/gdp.file.uk.csv")
 gdp.data  <- read.table(gdp.file, skip = 6, header = FALSE, sep = ',', stringsAsFactors = FALSE) 
 gdp       <- tis(gdp.data$V2, start = data.start, tif='quarterly')
 
@@ -39,7 +39,7 @@ gdp       <- tis(gdp.data$V2, start = data.start, tif='quarterly')
 core.cpi.start <- c(1970,1)
 cpi.start      <- c(1959,1)
 
-cpi.file     <- "rawData/uk_price_indices.csv"
+cpi.file     <- read.csv2("C:/FinMetricsProject/rawData/cpi.file.uk.csv")
 cpi.data     <- read.table(cpi.file, skip = 0, header = TRUE, sep = ',', stringsAsFactors = FALSE)
 core.cpi.nsa <- tis(cpi.data$core_cpi, start = cpi.start, tif = 'quarterly')
 core.cpi.nsa <- window(core.cpi.nsa, start = core.cpi.start)
@@ -54,7 +54,7 @@ cpi.nsa      <- tis(cpi.data$cpi, start = cpi.start, tif = 'quarterly')
 #            b. Populate rows with years. Remove sub-headers and rows of spaces
 #               In Excel, select area and choose F5, "Special", "Blanks", Delete
 #            c. Code assume the setup has 4 columns: "year","day","month","rate"
-bank.rate.file      <- "rawData/uk_boe_bank_rate_changes.csv"
+bank.rate.file      <- read.csv("C:/FinMetricsProject/rawData/bank.rate.file.uk.csv")
 bank.rate.data      <- read.table(bank.rate.file, skip = 0, header = TRUE, sep = ',', stringsAsFactors = FALSE)
 bank.rate.data$date <- as.Date(paste(bank.rate.data$month,bank.rate.data$day,bank.rate.data$year), "%b %d %Y")
 bank.rate.data      <- subset(bank.rate.data, select = c("date","rate"))
