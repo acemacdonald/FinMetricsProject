@@ -40,7 +40,7 @@ core.cpi.start <- c(1970,1)
 cpi.start      <- c(1959,1)
 
 cpi.file     <- read.csv2("C:/FinMetricsProject/rawData/cpi.file.uk.csv")
-cpi.data     <- read.table(cpi.file, skip = 0, header = TRUE, sep = ',', stringsAsFactors = FALSE)
+cpi.data     <- read.table(cpi.file, skip = 0, header = TRUE, sep = ",", stringsAsFactors = FALSE)
 core.cpi.nsa <- tis(cpi.data$core_cpi, start = cpi.start, tif = 'quarterly')
 core.cpi.nsa <- window(core.cpi.nsa, start = core.cpi.start)
 cpi.nsa      <- tis(cpi.data$cpi, start = cpi.start, tif = 'quarterly')

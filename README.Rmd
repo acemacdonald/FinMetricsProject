@@ -6,11 +6,6 @@ output: html_document
     
 # Miscellaneous notes
 
-# For the section on methodology where we put all the code, the LW paper has      four codes that 
-      prepare the data for each country. I'm not sure how to enter these into     them so they can all
-      run simultaneously. The codes are:
-                   -prepare.rstar.data.XX.R    ,  where XX = (ca, ea, uk, us)
-      
      I fixed the issue with regards to the source function, but I remember
      you said I should rather make it a function? 
     
@@ -18,6 +13,9 @@ output: html_document
     format, it says <'file' must be a character string or connection >
     
     Do you know how I can fix it?
+    
+    With regards to the U.S. data, everything works fine up until line 56
+    where I try and merge the two series together.
     
   
               
