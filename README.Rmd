@@ -24,11 +24,14 @@ output: html_document
     Error in read.table(awm.file, header = TRUE) : 
          'file' must be a character string or connection
         
-        THis seems to happen across all prepare files.
+    Prepared the EU data in a new script called  prepare.attempt.ea
+    Up until line 103, where I got this response:
     
-  
-              
-
+    Path 'X13' specified but does not exists.
+    Error in checkX13(fail = TRUE, fullcheck = FALSE, htmlcheck = FALSE) : 
+     Process terminated
+     
+    I understand its from line 15 but I dont know how to fix it.
 
 # Sourcing your functions:
 
@@ -128,6 +131,7 @@ Remember to delete all data once the project is finished.
     HelpersMG
     seasonalview
     lubridate
+    dplyr
     
 # PAPER
 
