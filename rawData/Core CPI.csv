@@ -1,0 +1,25 @@
+"Table 326-0022 Consumer Price Index (CPI), seasonally adjusted, monthly (2002=100)(1,2,3,4,6,7)"
+Survey or program details:
+Consumer Price Index - 2301
+Geography,Products and product groups,Jul-2017,Aug-2017,Sep-2017,Oct-2017,Nov-2017
+Canada,All-items (9),130.1,130.4,130.6,130.8,131.5
+Canada,Food,143.5,143.6,143.6,143.3,143.6
+Canada,Shelter,137.7,138.0,138.1,138.6,138.9
+Canada,"Household operations, furnishings and equipment",121.9,121.7,121.5,122.2,122.9
+Canada,Clothing and footwear,94.0,93.7,92.8,93.2,93.7
+Canada,Transportation,130.6,131.7,133.2,134.0,136.0
+Canada,Health and personal care,124.7,124.9,124.7,125.3,124.0
+Canada,"Recreation, education and reading",114.0,113.9,114.1,113.9,114.5
+Canada,Alcoholic beverages and tobacco products,161.5,161.8,162.3,162.4,162.7
+Canada,All-items excluding food and energy,125.5,125.6,125.6,125.9,126.2
+Footnotes:
+1,"The Consumer Price Index (CPI) is an indicator of the changes in consumer prices experienced by the target population. The CPI measures price change by comparing, over time, the cost of a fixed basket of goods and services. The CPI basket is based on the expenditures of the target population in a certain reference period. A list of baskets and reference periods is available in The Canadian Consumer Price Index Reference Paper, catalogue no. 62-553-X, on the Statistics Canada website. Since a basket contains goods and services of unchanging or equivalent quantity and quality, the index reflects only pure price movements. Separate CPIs are published for Canada, the 10 provinces, Whitehorse, Yellowknife and Iqaluit. Some CPI information is also available for 16 additional cities. Since the CPI is a measure of price change from one time period to another, it cannot be used to indicate differences in price levels between provinces or cities."
+2,"The Consumer Price Index (CPI) is not a cost-of-living index. The objective behind a cost-of-living index is to measure changes in expenditures necessary for consumers to maintain a constant standard of living. The idea is that consumers would normally switch between products as the price relationship of goods changes. If, for example, consumers get the same satisfaction from drinking tea as they do from coffee, then it is possible to substitute tea for coffee if the price of tea falls relative to the price of coffee. The cheaper of the interchangeable products may be chosen. We could compute a cost-of-living index for an individual if we had complete information about that person's taste and spending habits. To do this for a large number of people, let alone the total population of Canada, is impossible. For this reason, regularly published price indexes are based on the fixed-basket concept rather than the cost-of-living concept."
+3,"The Consumer Price Index (CPI) compares, in percentage terms, prices in any given time period to prices in the official base period which, at present, is 2002=100. The official time base was changed from 1992=100 to 2002=100 starting with the May 2007 data released in June 2007. The change is strictly an arithmetic conversion, which alters the index levels but leaves the percentage changes between any two periods intact, except for differences in rounding."
+4,"For concepts and definitions, see publication Your Guide to the Consumer Price Index, catalogue no. 62-557-X, or publication The Canadian Consumer Price Index Reference Paper, catalogue no. 62-553-X. Additional information can also be obtained from the Consumer Prices Division at 1-866-230-2248 (toll-free) or by email at cpd-info-dpc@statcan.gc.ca."
+6,This table replaces CANSIM table 326-0016 which was archived with the release of April 2007 data. Users can calculate and reproduce the data that was formally released in CANSIM tables 326-0017 and 326-0018.
+7,"A seasonally adjusted series is one from which seasonal movements have been eliminated. Each month, the previous month's seasonally adjusted index is subject to revision. On an annual basis, the seasonally adjusted values for the last three years are revised with the January data release. Users employing Consumer Price Index (CPI) data for indexation purposes are advised to use the unadjusted indexes. For more information on the availability and uses of seasonally adjusted CPI data, please see the <a href = ""www23.statcan.gc.ca:81/imdb/p2SV.pl?Function=getSurvey&SDDS=2301&lang=en&db=imdb&adm=8&dis=2#b10"">Definitions, data sources and methods</a> section of survey <a href=""www.statcan.gc.ca/imdb-bmdi/2301-eng.htm"">2301</a>."
+9,"The eight major components of the Consumer Price Index (CPI) basket are: ""food"", ""shelter"", ""household operations, furnishings and equipment"", ""clothing and footwear"", ""transportation"", ""health and personal care"", ""recreation, education and reading"", and ""alcoholic beverages and tobacco products""."
+Source:
+"Statistics Canada. Table 326-0022 - Consumer Price Index (CPI), seasonally adjusted, monthly (2002=100)"
+"(accessed: December 21, 2017)"

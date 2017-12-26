@@ -5,7 +5,7 @@
 #              HLW for Canada.
 #------------------------------------------------------------------------------#
 rm(list = ls())
-source("utilities.R")
+source("C:/FinMetricsProject/Code/utilities.R")
 
 # Load time series library
 if (!require("tis")) {install.packages("tis"); library("tis")}
@@ -29,7 +29,7 @@ data.end   <- c(2016,3)
 #     1. Download data from the International Financial Statistics (IFS) Database on the IMF website:
 #        Series: "Gross Domestic Product, Real, Seasonally adjusted, Index"
 #     2. Save data as a CSV and specify the file name in gdp.file
-gdp.file <- "rawData/canada_gdp_ifs.csv"
+gdp.ca <- read.csv("C:/FinMetricsProject/rawData/gdp.ca")
 gdp.data <- read.table(gdp.file, skip = 1, header = TRUE, sep = ',', stringsAsFactors = FALSE)
 gdp      <- tis(gdp.data$Canada, start = data.start, tif = 'quarterly')
 

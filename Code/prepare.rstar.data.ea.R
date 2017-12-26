@@ -5,7 +5,7 @@
 #              HLW for the Euro Area.
 #------------------------------------------------------------------------------#
 rm(list = ls())
-source("utilities.R")
+source("C:/FinMetricsProject/Code/utilities.R")
 
 # Load time series library
 if (!require("tis")) {install.packages("tis"); library('tis')}
@@ -30,8 +30,11 @@ core.cpi.start <- c(1987,4)
 #     1. Download data from the Euro Area Business Cycle Network website
 #     2. Save data as a CSV and specify the file name in awm.file
 # NOTE: We seasonally adjust data rather than using HEXSA, HICPSA because of availability
-awm.file <- 'rawData/area_wide_model_ea.csv'
-awm.data <- read.table(awm.file,header=TRUE,sep=',')[,c('DATE','YER','STN','HEX','HICP')]
+
+awm.file.eu <- read.csv("C:/FinMetricsProject/rawData/area_wide_model_ea.csv")
+awm.file <- awm.file.eu
+
+awm.data <- read.table(awm.file, header=TRUE, sep=',')[c('DATE','YER','STN','HEX','HICP'),]
 
 awm.start    <- c(as.numeric(substr(awm.data[1,'DATE'],1,4)),
                   as.numeric(substr(awm.data[1,'DATE'],6,7)))

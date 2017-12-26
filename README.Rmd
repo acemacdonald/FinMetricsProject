@@ -17,6 +17,15 @@ output: html_document
     With regards to the U.S. data, everything works fine up until line 56
     where I try and merge the two series together.
     
+    I've now tried with Euro data as well, but I get the familiar response
+    that I get with the other prepare files as well:
+    
+    awm.data <- read.table(awm.file,header=TRUE)[c('DATE','YER','STN','HEX','HICP'),]
+    Error in read.table(awm.file, header = TRUE) : 
+         'file' must be a character string or connection
+        
+        THis seems to happen across all prepare files.
+    
   
               
 
@@ -118,6 +127,7 @@ Remember to delete all data once the project is finished.
     nloptr
     HelpersMG
     seasonalview
+    lubridate
     
 # PAPER
 
