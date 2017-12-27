@@ -35,6 +35,7 @@ awm.file.eu <- read.csv("C:/FinMetricsProject/rawData/area_wide_model_ea.csv")
 awm.file <- awm.file.eu
 
 awm.data <- read.table(awm.file, header=TRUE, sep=',')[c('DATE','YER','STN','HEX','HICP'),]
+awm.data <- awm.file %>% mutate('DATE','YER','STN','HEX','HICP')
 
 awm.start    <- c(as.numeric(substr(awm.data[1,'DATE'],1,4)),
                   as.numeric(substr(awm.data[1,'DATE'],6,7)))

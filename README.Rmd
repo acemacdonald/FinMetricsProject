@@ -32,6 +32,11 @@ output: html_document
      Process terminated
      
     I understand its from line 15 but I dont know how to fix it.
+    
+    27/12
+    Worked on the UK prep file - prepare.attempt.uk
+    WOrked up until about line 63ish where my date format doesn't seem to hold
+    when trying to specifiy bank.rate.data
 
 # Sourcing your functions:
 
