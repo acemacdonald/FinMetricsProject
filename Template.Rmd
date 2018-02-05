@@ -90,68 +90,7 @@ In your tempalte folder, you will find a Data and a Code folder. In order to kee
 
 <!-- The following is a code chunk. It must have its own unique name (after the r), or no name. After the comma follows commands for R which are self-explanatory. By default, the code and messages will not be printed in your pdf, just the output: -->
 
-```{r Figure1, warning =  FALSE, fig.align = 'center', fig.cap = "Caption Here \\label{Figure1}", fig.ext = 'png', fig.height = 3, fig.width = 6}
 
-library("tidyverse")
-library("ggplot2")
-library("ggthemes")
-
-
-if (!file.exists(file.path(getwd(), "Code/Example_Plot_Scatter.R"))) {
-  # This is just a random plot to show you a plot. This is done if the getwd() does not point to your Template's directory.
-  # Set WD below to your project's working directory.
-  
-  g <-
-  ggplot(data = mtcars %>% tbl_df()) + # All data must be tbl_df()::: class(mtcars %>% tbl_df())
-  geom_point(aes(x = disp, y = hp, color = cyl)) +
-  theme_bw() +
-  # theme(legend.position = "none") +
-  theme(plot.title = element_text(size = 10)) +
-  theme(axis.title = element_text(size = 10), 
-        axis.title.x = element_text()) +
-  ylab("y-axis") +
-  xlab("x-axis")
-
-print(g)  
-
-} else {
-
-# ----------  Using your Code and Data folders to manage your Template:
-#------------------- To make this work, change WD to your project's directory:
-
-  WD <- getwd()
-
-# Load Example Data using read_csv from Hadley Wickham (or other csv reading methods of your choice):
-ExampleData <- read_csv( file.path(WD, "Data/ExampleData.csv") )
-
-source( file.path(WD, "Code/Example_Plot_Scatter.R") ) # Load a function from your 'Code' folder. This e.g. plots scatters to your own preferences.
-source( file.path(WD, "Code/Data_Create.R") ) # 
-
-ExampleData <- Data_Create(N = 100) # Same as the ExampleData loaded above - this is just a function to create the stored data.
-
-g <- Example_Plot_Scatter(DataInput = ExampleData, 
-                          X = "Height_Score",
-                          Y = "Weight_Score",
-                          Z = "Agility_Score",
-                          Theme = theme_bw(), # run ?ggthemes for other themes. 
-                          Title = "", # I prefer to use the caption set above. 
-                          Ylab = "Height", 
-                          Xlab = "Lenght",
-                          LegendTitle = "Agility",
-                          TitleSize = 10, 
-                          LabSize = 10)
-
-print(g)
-
-  
-}
-
-
-# Although the functions above are really simple, the principle is simple: containing calculations and data wrangling in their own functions will make this template much cleaner and manageable. 
-
-# When you start working, delete these meaningless functions and replace with your own...
-
-```
 
 To reference the plot above, add a ``\\label'' after the caption in the chunk heading, as done above. Then reference the plot as such: As can be seen, figure \ref{Figure1} is excellent. The nice thing now is that it correctly numbers all your figures (and sections or tables) and will update if it moves. The links are also dynamic.
 

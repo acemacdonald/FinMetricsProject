@@ -13,6 +13,8 @@ if (!require("tis")) {install.packages("tis"); library('tis')}
 # Set up seasonal adjustment
 if (!require("seasonal")) {install.packages("seasonal"); library('seasonal')}
 
+data.start <- c(1961,1)
+data.end   <- c(2016,1)
 
 #------------------------------------------------------------------------------#
 # Get Raw Data
@@ -22,9 +24,9 @@ gdp.rsa             <- read.csv("C:/FinMetricsProject/rawData/NAEXKP01ZAQ661S.cs
 
 price.index.rsa     <- read.csv("C:/FinMetricsProject/rawData/ZAFCPIALLQINMEI.csv")
 
-price.index.rsa.core     <- read.csv("C:/FinMetricsProject/rawData/ZAFCPICORQINMEI.csv")
+inflation.rsa       <- read.csv("C:/FinMetricsProject/rawData/FPCPITOTLZGZAF.csv")
 
-overnightrate.rsa       <- read.csv("C:/FinMetricsProject/rawData/IRSTCB01ZAM156N.csv")
+overnightrate.rsa   <- read.csv("C:/FinMetricsProject/rawData/IRSTCB01ZAM156N.csv")
 
 #------------------------------------------------------------------------------#
 # Prepare Data
@@ -58,19 +60,46 @@ price.index <- cbind(price.index.rsa, price.index.rsa$PriceIndex)
 price.index.rsa <- xts(price.index.rsa, order.by = price.index.rsa$DATE)
 price.index <- xts(price.index.rsa, order.by = as.POSIXct(price.index.rsa$DATE))
 
+# Define inflation
 
-inflation <- 400*log(price.index/Lag(price.index, k=12))   #This does not run correctly
+inflation <- inflation.rsa
 
-#Calculate inflation
+quarter<-seq(as.Date("1961-01-01"), as.Date("2016-01-01"), by="quarter")
+estinflation<-approx(inflation$FPCPITOTLZGZAF, n=length(quarter))
 
-inflation <- 400*(price.index/Lag(price.index, k=12))
+newdf<-data.frame(quarter, estinflation$y)
+
+inflation.q <- newdf
+colnames(inflation.q) <- c("DATE","Inflation")
+
+inflation <- xts(inflation, order.by = as.POSIXct(inflation$DATE))
+
+#Old method
+
+inflation.expectations <- (inflation + lag(inflation, k=1) + lag(inflation, k=2) + lag(inflation, k=3))/4
 
 
-View(inflation)
+inflation.num <- as.numeric(estinflation$y) 
+inflation.num <- as.vector(inflation.num)
+
+inflation.num.L1 <- lagpad(inflation.num,1)
+inflation.num.L2 <- lagpad(inflation.num,2)
+inflation.num.L3 <- lagpad(inflation.num,3)
+
+#New method
+
+inflation.expectations.new <- ((inflation.num + inflation.num.L1 + inflation.num.L2 + inflation.num.L3))/4
+inflation.expectations.new
+
+
+# Define ST rate
 
 interest <- overnightrate.rsa
 
-
+data.out <- window(cbind(gdp.log, inflation, inflation.expectations.new, interest),start = data.start, end = data.end)
+write.table(data.out,file = 'inputData/rstar.data.us.csv', sep = ',',
+            col.names = TRUE, quote = FALSE, na = '.', row.names = FALSE)
+}
 
 
 

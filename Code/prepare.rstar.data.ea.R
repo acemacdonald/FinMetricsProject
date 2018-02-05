@@ -4,8 +4,6 @@
 # Description: This file (1) compiles and (2) prepares the data to be used in
 #              HLW for the Euro Area.
 #------------------------------------------------------------------------------#
-rm(list = ls())
-source("C:/FinMetricsProject/Code/utilities.R")
 
 # Load time series library
 if (!require("tis")) {install.packages("tis"); library('tis')}
@@ -34,9 +32,8 @@ core.cpi.start <- c(1987,4)
 awm.file.eu <- read.csv("C:/FinMetricsProject/rawData/area_wide_model_ea.csv")
 awm.file <- awm.file.eu
 
-awm.data <- read.table(awm.file, header=TRUE, sep=',')[c('DATE','YER','STN','HEX','HICP'),]
-awm.data <- awm.file %>% mutate('DATE','YER','STN','HEX','HICP')
-
+awm.data <- awm.file %>% select('X','YER','STN','HEX','HICP')
+colnames(awm.data) <- c("DATE", "YER", "STN", "HEX", "HICP")
 awm.start    <- c(as.numeric(substr(awm.data[1,'DATE'],1,4)),
                   as.numeric(substr(awm.data[1,'DATE'],6,7)))
 
@@ -107,7 +104,7 @@ inflation.q      <- 400*log(cpi/Lag(cpi, k=1))
 
 # Final inflation series: CPI series is used prior to 1988q1;
 # thereafter, use core CPI series
-inflation <- mergeSeries(window(inflation.q, end = core.cpi.start),window(core.inflation.q, start = shiftQuarter(core.cpi.start,1)))
+inflation <- mergeSeries(window(inflation.q, end = c(1987,4)),window(core.inflation.q, start = shiftQuarter(core.cpi.start,1)))
 
 # Inflation expectations measure: 4-quarter moving average of past inflation
 inflation.expectations <- (inflation + Lag(inflation, k=1) + Lag(inflation, k=2) + Lag(inflation, k=3))/4

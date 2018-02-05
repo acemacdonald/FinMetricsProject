@@ -6,7 +6,7 @@ prep.rstar.us <- function(){
 # Description: This file (1) compiles and (2) prepares the data used in
 #              HLW for the US.
 #------------------------------------------------------------------------------#
-rm(list = ls())
+
 source("C:/FinMetricsProject/Code/utilities.R")
 # Load time series library
 if (!require("tis")) {install.packages("tis"); library('tis')}
@@ -50,12 +50,12 @@ price.index <- xts(price.index.us, order.by = as.POSIXct(price.index.us$DATE))
 
 #Calculate inflation
 
-inflation <- 400*log(price.index.us/Lag(price.index.us, k=12))
+inflation <- 400*log(price.index.us/lag(price.index.us,k=12))
 
 # Inflation expectations measure: 4-quarter moving average of past inflation
 
 
-inflation.expectations <- (inflation + Lag(inflation, k=1) + Lag(inflation, k=2) + Lag(inflation, k=3))/4
+inflation.expectations <- (inflation + lagpad(inflation,1) + lagpad(inflation,2) + Llagpad(inflation,3))/4
 
 # Express interest rate data on a 365-day basis
 ny.discount.eff <- 100*((1+ny.discount.us/36000)^365 -1)

@@ -4,8 +4,6 @@
 # Description: This file (1) compiles and (2) prepares the data used in
 #              HLW for the UK.
 #------------------------------------------------------------------------------#
-rm(list = ls())
-source("C:/FinMetricsProject/Code/utilities.R")
 
 # Load time series library
 if (!require("tis")) {install.packages("tis"); library('tis')}
@@ -27,9 +25,9 @@ data.end   <- c(2016,3)
 #     1. Download data from the ONS website:
 #        Series: ABMI: "Gross Domestic Product: chained volume measures: Seasonally adjusted (Millions of pounds)
 #     2. Save data as a CSV and specify the file name in gdp.file
-gdp.file  <- read.csv2("C:/FinMetricsProject/rawData/gdp.file.uk.csv")
-gdp.data  <- read.table(gdp.file, skip = 6, header = FALSE, sep = ',', stringsAsFactors = FALSE) 
-gdp       <- tis(gdp.data$V2, start = data.start, tif='quarterly')
+gdp.file  <- read.csv("C:/FinMetricsProject/rawData/gdp.file.csv")
+gdp.data  <- gdp.file %>% select('Date','RealGDP')
+gdp       <- tis(gdp.data$RealGDP, start = data.start, tif='quarterly')
 
 # Import core CPI and CPI data
 # PRIOR STEPS:
@@ -40,10 +38,10 @@ core.cpi.start <- c(1970,1)
 cpi.start      <- c(1959,1)
 
 cpi.file     <- read.csv2("C:/FinMetricsProject/rawData/cpi.file.uk.csv")
-cpi.data     <- read.table(cpi.file, skip = 0, header = TRUE, sep = ",", stringsAsFactors = FALSE)
-core.cpi.nsa <- tis(cpi.data$core_cpi, start = cpi.start, tif = 'quarterly')
+cpi.data     <- cpi.file %>% select('Date', 'CPI', 'Core.CPI')
+core.cpi.nsa <- tis(cpi.data$Core.CPI, start = cpi.start, tif = 'quarterly')
 core.cpi.nsa <- window(core.cpi.nsa, start = core.cpi.start)
-cpi.nsa      <- tis(cpi.data$cpi, start = cpi.start, tif = 'quarterly')
+cpi.nsa      <- tis(cpi.data$CPI, start = cpi.start, tif = 'quarterly')
 
 # Import bank rate data
 # PRIOR STEPS:
@@ -55,7 +53,9 @@ cpi.nsa      <- tis(cpi.data$cpi, start = cpi.start, tif = 'quarterly')
 #               In Excel, select area and choose F5, "Special", "Blanks", Delete
 #            c. Code assume the setup has 4 columns: "year","day","month","rate"
 bank.rate.file      <- read.csv2("C:/FinMetricsProject/rawData/bank.rate.file.uk.csv")
-bank.rate.data      <- read.table(bank.rate.file, skip = 0, header = TRUE, sep = ',', stringsAsFactors = FALSE)
+
+bank.rate.data <- bank.rate.file %>% select('Date', 'month', 'day', 'year', 'rate')
+
 bank.rate.data$date <- as.Date(paste(bank.rate.data$month,bank.rate.data$day,bank.rate.data$year), "%b %d %Y")
 bank.rate.data      <- subset(bank.rate.data, select = c("date","rate"))
 
@@ -84,7 +84,7 @@ cpi <- final(seas(as.ts(naWindow(cpi.nsa),freq=4)))
 cpi <- as.tis(cpi,start=cpi.start,tif='quarterly')
 
 core.cpi <- final(seas(as.ts(naWindow(core.cpi.nsa),freq=4)))
-core.cpi <- as.tis(core.cpi,start=core.cpi.start,tif='quarterly')
+core.cpi <- as.tis(core.cpi.nsa,start=core.cpi.start,tif='quarterly')
 
 # Create annualized core inflation and inflation series using the price indices
 core.inflation.q <- 400*log(core.cpi/Lag(core.cpi, k=1))

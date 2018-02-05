@@ -4,8 +4,6 @@
 # Description: This file (1) compiles and (2) prepares the data used in
 #              HLW for Canada.
 #------------------------------------------------------------------------------#
-rm(list = ls())
-source("C:/FinMetricsProject/Code/utilities.R")
 
 # Load time series library
 if (!require("tis")) {install.packages("tis"); library("tis")}
@@ -29,8 +27,10 @@ data.end   <- c(2016,3)
 #     1. Download data from the International Financial Statistics (IFS) Database on the IMF website:
 #        Series: "Gross Domestic Product, Real, Seasonally adjusted, Index"
 #     2. Save data as a CSV and specify the file name in gdp.file
-gdp.ca <- read.csv("C:/FinMetricsProject/rawData/gdp.ca")
+gdp.ca <- read.csv("C:/FinMetricsProject/rawData/gdp.ca.csv")
+
 gdp.data <- read.table(gdp.file, skip = 1, header = TRUE, sep = ',', stringsAsFactors = FALSE)
+
 gdp      <- tis(gdp.data$Canada, start = data.start, tif = 'quarterly')
 
 # Import daily bank rate data
@@ -38,7 +38,7 @@ gdp      <- tis(gdp.data$Canada, start = data.start, tif = 'quarterly')
 #     1. Download data from the Statistics Canada (CANSIM) website:
 #     Series: v122530 
 #     2. Save data as a CSV and specify the file name in bank.rate.file
-bank.rate.file <- "rawData/cansim_bank_rate_v122530.csv"
+bank.rate.file <- "C:/FinMetricsProject/rawData/cansim_bank_rate_v122530.csv"
 bank.rate.data <- read.table(bank.rate.file, skip = 2, header = TRUE, sep = ',', stringsAsFactors = FALSE)
 bank.rate.m    <- tis(bank.rate.data$v122530, start = data.start, tif='monthly')
 
