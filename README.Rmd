@@ -3,6 +3,20 @@ title: "README"
 output: html_document
 ---
 
+
+Root <- getwd()
+
+# Packages
+
+if(!require(dplyr)) install.packages("dplyr")
+if(!require(mFilter)) install.packages("mFilter")
+if(!require(tis)) install.packages("tis")
+if(!require(nloptr)) install.packages("nloptr")
+if(!require(HelpersMG)) install.packages("HelpersMG")
+if(!require(seasonalview)) install.packages("seasonalview")
+if(!require(lubridate)) install.packages("lubridate")
+if(!require(xts)) install.packages("xts")
+
     
 # Miscellaneous notes
 
@@ -19,7 +33,22 @@ output: html_document
              invalid time series parameters specified
     
      Lastly, in lines 53, 61 and 62, I can't get round the + and / operators.
+     
+     I also could not find a function to convert the quarterly gdp.us data to monthly frequency. THe gdp.us
+     code is in line 42.
+     
+   # prepare.rstar.data.us.2.R:
+   ------------------------
     
+     I tried a different approach in this script but I do not know if the values are in the right format.
+     In line 82 the command to merge the data does not run, I get the following error:
+     
+     Error in inferTi(xindex) : dateTimes are all NA
+     In addition: Warning message:
+     In `>=.default`(all.indexes, start) :
+       longer object length is not a multiple of shorter object length
+    
+    Further, I can't change the gdp.us from a quarterly to monthly frequency in line 42.
     
    # prepare.rstar.data.uk.R
     --------------------

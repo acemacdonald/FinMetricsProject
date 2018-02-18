@@ -102,12 +102,7 @@ Here follows another figure from built-in ggplot2 data:
 
 ```{r figure2, warning =  FALSE, fig.align = 'center', fig.cap = "Diamond Cut Plot \\label{lit}", fig.ext = 'png', fig.height = 3, fig.width = 6}
 
-g <-
-ggplot(diamonds, aes(depth, fill = cut, colour = cut)) +
-  geom_density(alpha = 0.3) +
-  theme_bw()
-
-print(g)  
+ 
 
 ```
 
@@ -165,19 +160,6 @@ Tables can be included as follows. Use the _xtable_ (or kable) package for table
 
 ```{r ShortTable, results = 'asis'}
 
-library(xtable)
-data <- mtcars[1:5,] %>% tbl_df()
-
-table <- xtable(data, caption = "Short Table Example \\label{tab1}")
-  print.xtable(table, 
-             # tabular.environment = "longtable",
-             floating = TRUE,
-             table.placement = 'H', 
-             # scalebox = 0.3, 
-             comment = FALSE,
-             caption.placement = 'bottom',
-             )
-
 ```
 
 To reference calculations __in text__, _do this:_ From table \ref{tab1} we see the average value of mpg is `r mean(mtcars[1:5,]$mpg)`.
@@ -190,28 +172,7 @@ Use the following default settings to build your own possibly long tables. Note 
 
 library(xtable)
 
-data = mtcars %>% tbl_df()
-  addtorow          <- list()
-  addtorow$pos      <- list()
-  addtorow$pos[[1]] <- c(0)
-  addtorow$command  <- c(paste("\\hline \n",
-                               "\\endhead \n",
-                               "\\hline \n",
-                               "{\\footnotesize Continued on next page} \n",
-                               "\\endfoot \n",
-                               "\\endlastfoot \n",sep=""))
-table <- xtable(data, caption = "Long Table Example")
-  print.xtable(table, 
-             tabular.environment = "longtable",
-             floating = FALSE, # Leave this as is.
-             table.placement = 'H', # Leave this as is.
-             booktabs = T, # Aesthetics
-             include.rownames = FALSE,  # Typically you don't want this in a table.
-             add.to.row = addtorow, # For adding the Continued on next page part...
-             comment = FALSE, 
-             caption.placement = 'bottom',  # Where do you want the caption?
-             size="\\fontsize{12pt}{13pt}\\selectfont"  # Size of text in table..
-             )
+
 # See https://cran.r-project.org/web/packages/xtable/vignettes/xtableGallery.pdf for table inspiration
 ```
 
@@ -231,38 +192,13 @@ See documentation for this package [here](https://hughjonesd.github.io/huxtable/
 
 ```{r, results = 'asis'}
 
-library(huxtable)
 
-data(diamonds, package = 'ggplot2')
-
-Title <- "Regression Output"
-Label <- "Reg01"
-    
-lm1 <- lm(price ~ carat, diamonds)
-lm2 <- lm(price ~ depth, diamonds)
-lm3 <- lm(price ~ carat + depth, diamonds)
-lm4 <- lm(price ~ carat*depth, diamonds)
-
-htab <- 
-huxreg(lm1, lm2, lm3, lm4, 
-                statistics = c(N = "nobs", R2 = "r.squared"), 
-                note = "%stars%.") %>% 
-  set_caption(Title) %>% 
-  set_label(Label) %>% 
-  set_width(.6)
-
-# More settings:
-font_size(htab) <- 10
 
 # Let's change regression names: this is slightly hacky, but works. Comment out this section to see what the default looks like:
-  Names <- c("Reg1", "Reg2", "Reg3", "Reg4")
-  for(i in 1:ncol(htab)) {
-    htab[1,][[1+i]] <- Names[i]  
-  }
-  
+
 # Now simply call the table:
   
-htab
+
 
 ```
 
